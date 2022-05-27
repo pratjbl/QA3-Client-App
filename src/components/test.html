@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {%- auth0:head -%}
+    <title>2nd Factor Authentication</title>
+    <link href="https://iddev.mcafee.com/fonts/Poppins-ExtraBold.ttf" rel="stylesheet">
+    <link rel="shortcut icon" href="https://secureimages.mcafee.com/common/strongMail/mcafee_shield.png">
+    <style type="text/css">
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+
+        }
+
+        #footer {
+            width: 100%;
+        }
+
+        #footer>div {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .loader-logo-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 63.25rem;
+        }
+
+        #loading {
+            position: fixed;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            text-align: center;
+            opacity: 1;
+            background-color: #fff;
+            z-index: 99;
+        }
+
+
+        .loaderWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 63.25rem;
+        }
+
+        .loaderContainer {
+            display: flex;
+            justify-content: center;
+        }
+
+        .loaderLogo {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            margin-left: 4rem;
+            margin-top: 2rem;
+        }
+
+        .loaderLogoWrapper {
+            display: flex;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .loaderCreatingYourAccount {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .loadingLogo {
+            height: 5rem;
+            width: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .loadingText {
+            font-weight: 700;
+            font-family: "Poppins", sans-serif;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .Logo {
+            width: 5rem;
+            height: 1rem;
+        }
+
+        @media only screen and (min-width: 700px) {
+            .loaderLogoWrapper {
+                display: flex;
+                justify-content: flex-start;
+                max-width: 63.25rem;
+            }
+
+            .loaderLogo {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                margin-left: 4rem;
+                margin-top: 2rem;
+            }
+        }
+
+        @media only screen and (min-width: 1120px) {
+            .loaderLogoWrapper {
+                display: flex;
+                max-width: 63.25rem;
+            }
+        }
+
+
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #4258ff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #4258ff #4258ff #d1d5df #d1d5df;
+        }
+
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .mfa-container {
+            min-height: 100vh;
+            min-width: 28rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0rem;
+        }
+
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .FooterContainer {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.75rem;
+        }
+
+        .link {
+            text-decoration: none;
+            color: #4258ff;
+        }
+
+        .link:active {
+            color: #4258ff;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            color: #4258ff;
+            text-decoration: none;
+        }
+
+        .FooterLeftWrapper {
+            flex: 1;
+            display: flex;
+            font-size: 0.75rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .FooterRightWrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            color: #b1babf;
+        }
+
+        .FooterLinkContainer {
+            color: #4258ff;
+            padding: 0 1rem;
+            cursor: pointer;
+            border-right: 1px solid lightgray;
+            white-space: nowrap;
+        }
+
+        .FooterLinkContainer:last-child {
+            border-right: unset;
+            white-space: nowrap;
+        }
+
+
+
+
+
+
+        .left-div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+        }
+
+        .right-div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+
+        .left-div-heading {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            font-size: 2rem;
+            font-family: "Poppins", sans-serif;
+            line-height: 40px;
+        }
+
+
+        .table {
+            display: table;
+            height: 100%;
+            width: 100%;
+            background-color: white;
+        }
+
+        .cell {
+            display: table-cell;
+
+        }
+
+        .content {
+            padding: 25px 0px 25px 0px;
+            width: var(--prompt-width)
+                /* login widget width */
+        }
+
+        .subHeading {
+            color: #5a6175;
+            font-size: 1.125rem;
+            font-weight: 400;
+            font-family: "Poppins", sans-serif;
+        }
+
+        #PageContainer {
+            min-height: 0;
+        }
+
+
+
+        @media only screen and (min-width: 400px) {
+            .content {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+
+
+        @media only screen and (min-width: 700px) {
+
+
+
+            .content {
+                padding: 25px 0px 25px 0px;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
+
+            .left-div {
+                flex: 1;
+            }
+
+            .mfa-container {
+                min-height: 96vh;
+                margin: 3rem 3rem 0rem 3rem;
+            }
+
+            .wrapper {
+                display: flex;
+                flex-direction: row;
+                max-width: 63.875rem;
+                justify-content: center;
+
+            }
+
+
+
+            .FooterContainer {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                background-color: #ffffff;
+                white-space: nowrap;
+                font-family: "Poppins", sans-serif;
+            }
+
+            .FooterLeftWrapper {
+                font-size: 0.75rem;
+                justify-content: unset;
+            }
+
+
+
+        }
+    </style>
+    <script type="text/javascript">
+        var utag_data = {
+            tm_global_sourcetype: "Unified Authentication",
+            tm_local_unifiedauthentication_clientid: "HomeSite",
+            tm_global_coe: "Unified Authentication",
+            tm_global_platform: "Web",
+            tm_global_businessunit: "Consumer",
+            tm_global_tealium_calltype: "manual",
+            tm_global_geo: "NA",
+        };
+    </script>
+    <script>
+        window.utag_cfg_ovrd = window.utag_cfg_ovrd || {};
+        window.utag_cfg_ovrd.noview = true;
+    </script>
+    <script src="//tags.tiqcdn.com/utag/mcafee/consumer-main/dev/utag.js" type="text/javascript"></script>
+</head>
+
+<body class="_hide-prompt-logo">
+    <div id="loading">
+        <div class="loaderContainer">
+            <div class="loaderWrapper">
+                <div class="loaderLogoWrapper">
+                    <div class="loaderLogo">
+                        <svg width="112" height="22" viewBox="0 0 112 22" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M54.5313 14.2051L51.7002 12.5472L51.498 12.8738C50.8661 13.8786 49.9814 14.381 48.8945 14.381C47.024 14.381 45.6338 12.9743 45.6338 11.1405C45.6338 9.28168 47.0493 7.9001 48.8945 7.9001C50.0067 7.9001 50.8156 8.37738 51.498 9.40728L51.7002 9.73383L54.5313 8.07594L54.2785 7.72427C52.9135 5.76494 51.1694 4.83551 48.8692 4.83551C44.5469 4.83551 42.2214 8.10106 42.2214 11.1657C42.2214 14.2302 44.5469 17.4958 48.8692 17.4958C51.0683 17.4958 53.141 16.3905 54.2785 14.5819L54.5313 14.2051Z"
+                                fill="#C01818" />
+                            <path
+                                d="M54.3796 17.4457H58.2722L59.4349 14.5821H65.2739L66.4366 17.4457H70.3546L63.3781 0.690964H59.8899L60.8252 2.92661L54.3796 17.4457ZM62.3923 7.29742L63.9595 11.2412H60.7746L62.3923 7.29742Z"
+                                fill="#C01818" />
+                            <path
+                                d="M71.9722 17.4702H75.3846V9.93433H77.609V6.76926H75.3846V5.2872C75.3846 4.63409 75.8143 3.95586 76.6232 3.95586C77.0529 3.95586 77.3309 4.03122 77.5837 4.1317L77.9629 4.28242L79.3784 1.1927L78.9739 1.01687C78.342 0.76567 77.4573 0.665192 76.8254 0.665192C75.2835 0.665192 73.9944 1.16758 73.135 2.12213C72.3767 2.95108 71.947 4.10658 71.947 5.38768V6.74414H70.4304V9.90921H71.947L71.9722 17.4702Z"
+                                fill="#C01818" />
+                            <path
+                                d="M26.1201 0.589981V17.4452H29.8358V7.79931L33.4503 10.462L37.0396 7.79931V17.4452H40.7553L40.7806 0.589981L33.4503 6.09118L26.1201 0.589981Z"
+                                fill="#C01818" />
+                            <path
+                                d="M85.3437 4.86069C81.0467 4.86069 78.7212 8.10112 78.7212 11.1657C78.7212 14.2303 81.0467 17.4707 85.3437 17.4707C87.3153 17.4456 89.1605 16.5664 90.6013 14.9337L87.8209 13.4265C87.1131 14.1549 86.2284 14.5317 85.2679 14.5317C83.8524 14.5317 82.6138 13.6023 82.2852 12.3715H91.5871V11.5425C91.5871 6.94562 87.922 4.86069 85.3437 4.86069ZM82.3611 9.60829C82.816 8.45279 83.7766 7.79968 85.0151 7.79968C86.279 7.79968 87.2648 8.45279 87.7703 9.63341L82.3611 9.60829Z"
+                                fill="#C01818" />
+                            <path
+                                d="M99.3218 4.86069C95.0248 4.86069 92.6993 8.10112 92.6993 11.1657C92.6993 14.2303 95.0248 17.4707 99.3218 17.4707C101.293 17.4456 103.139 16.5664 104.579 14.9337L101.799 13.4265C101.091 14.1549 100.207 14.5317 99.246 14.5317C97.8305 14.5317 96.5919 13.6023 96.2633 12.3715H105.565V11.5425C105.565 6.94562 101.925 4.86069 99.3218 4.86069ZM96.3391 9.60829C96.7941 8.45279 97.7547 7.77456 98.9932 7.79968C100.257 7.79968 101.243 8.45279 101.748 9.63341L96.3391 9.60829Z"
+                                fill="#C01818" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M9.56518 4.78168L0.565186 0.565216V17.3451L9.55745 21.5652L18.5652 17.3451V0.565216L9.56518 4.78168ZM9.56518 8.90129L9.57292 8.90493V8.89766L14.8532 6.41809V14.9588L9.56518 17.442L4.27716 14.9588V6.41809L9.55744 8.89766V8.90493L9.56518 8.90129Z"
+                                fill="#C01818" />
+                            <path d="M108.234 5V5.48567H107.422V8H106.812V5.48567H106V5H108.234Z" fill="#C01818" />
+                            <path
+                                d="M112 5V8H111.389V6.04871L110.573 8H110.111L109.29 6.04871V8H108.68V5H109.373L110.342 7.23066L111.311 5H112Z"
+                                fill="#C01818" />
+                        </svg>
+                    </div>
+                </div>
+
+
+
+                <div class="loaderCreatingYourAccount">
+                    <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M7.38666 11.134V27.3969L18 32.165V40L0 31.9588V0L18 8.04124V15.8763L7.38666 11.134ZM28.6133 11.134V27.3969L18 32.165V40L36 31.9588V0L18 8.04124V15.8763L28.6133 11.134Z"
+                            fill="#C01818" />
+                    </svg>
+                    <div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mfa-container">
+
+        <div class="wrapper">
+            <div class="left-div">
+                <div id="root"></div>
+            </div>
+            <div class="right-div">
+                <div class="table">
+                    <div class="cell">
+                        <div class="content">
+                            {%- auth0:widget -%}
+                        </div>
+                    </div>
+                </div>
+                <div id="logout">
+
+                </div>
+            </div>
+
+        </div>
+        <div id="footer" class="footer-style"></div>
+    </div>
+    <script src="/ui/bundle.min.js"></script>
+    <script>
+        const config = { id: "{{ application.id }}", name: "{{ application.name }}" }
+        console.log("this is the config", config);
+        new window.MFAWidget().init({
+            mfaConfig: config,
+
+        });    </script>
+    <script>
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
+        }
+        async function getLocale() {
+            try {
+                let response_setting = await fetch('/settings/en-US.json')
+            } catch {
+            }
+            try {
+                let response = await fetch('/content/en-US/messages.json')
+                await delay(2000);
+                document.getElementById("loading").style.display = "none"
+            } catch {
+                await delay(2000);
+                document.getElementsByClassName("left-div").style.display = "none"
+                document.getElementById("logout").style.display = "none"
+                document.getElementById("footer").style.display = "none"
+                document.getElementById("loading").style.display = "none"
+            }
+        }
+        getLocale()
+    </script>
+</body>
+
+</html>
