@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
@@ -23,35 +23,31 @@ import {
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-const NavBar = () => {
+const NavBar = (props) => {
   const currentValue = useSelector((state) => state.counter.value);
-  const value = useLocation().search;
+  const customComponent = useSelector((state) => state.customComponent.value);
+  console.log("customComponents", customComponent);
+  // const { customHeader } = props;
+  const [customHeader, setCustomHeader] = useState(null);
+  const finalRef = useRef(null);
 
+  useEffect(() => {
+    const fnc = () => {
+      console.log("is this function even running");
+      setCustomHeader(window.customHeader);
+      finalRef.current = window.customHeader;
+    };
+    console.log("is this useEffect Running");
+    window.addEventListener("customHeaderLoaded", fnc, false);
+    return () => window.removeEventListener("customHeaderLoaded", fnc);
+  });
+
+  console.log("what is this customHeader", customHeader);
   const [finalState, setFinalState] = useState({});
   useEffect(() => {
-    function UseQuery() {
-      return new URLSearchParams(value);
-    }
-    const AffId = () => {
-      let query = UseQuery();
-      const parsedHash = new URLSearchParams(window.location.hash.substr(1));
-      let culture = query.get("affid") ?? parsedHash.get("affid");
-      return culture;
-    };
-    const Culture = () => {
-      let query = UseQuery();
-      const parsedHash = new URLSearchParams(window.location.hash.substr(1));
-      let culture = query.get("culture") ?? parsedHash.get("culture");
-
-      return culture;
-    };
     setFinalState({
-      culture: currentValue?.culture || Culture() || "",
-      affid: currentValue?.affid || AffId() || 0,
-      enableBack: currentValue?.enableBack,
-      enableSkip: currentValue?.enableSkip,
-      hideHeader: currentValue?.hideHeader,
-      hideFooter: currentValue?.hideFooter,
+      culture: currentValue?.culture || "",
+      affid: currentValue?.affid || 0,
       ui_locales: currentValue?.ui_locales,
       aai: {
         ea: currentValue?.ea || "",
@@ -74,8 +70,28 @@ const NavBar = () => {
         },
       },
     });
-  }, [currentValue, value]);
-  // console.log("---->In the Navbar", finalState, currentValue);
+  }, [currentValue]);
+  console.log("---->In the Navbar", finalState, currentValue);
+
+  function useQuery() {
+    console.log("in the hook ", useLocation().search);
+    return new URLSearchParams(useLocation().search);
+  }
+
+  const Culture = () => {
+    let query = useQuery();
+    const parsedHash = new URLSearchParams(window.location.hash.substr(1));
+    let culture = query.get("culture") ?? parsedHash.get("culture");
+
+    return culture;
+  };
+
+  const AffId = () => {
+    let query = useQuery();
+    const parsedHash = new URLSearchParams(window.location.hash.substr(1));
+    let culture = query.get("affid") ?? parsedHash.get("affid");
+    return culture;
+  };
 
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
@@ -85,6 +101,10 @@ const NavBar = () => {
     logout({
       returnTo: window.location.origin,
     });
+
+  if (customComponent.customHeader) {
+    return React.createElement(customComponent.customHeader);
+  }
 
   return (
     <div className="nav-container">
@@ -138,6 +158,7 @@ const NavBar = () => {
                       loginWithRedirect({
                         ...finalState,
                         aai: JSON.stringify(finalState.aai),
+                        connectionName: "AV-Password-Authentication",
                         // affid: AffId(),
                         // fragment: `culture=en-us&aff_id=105`,
                         // &aai=${JSON.stringify(
@@ -196,8 +217,8 @@ const NavBar = () => {
                     block
                     onClick={() =>
                       loginWithRedirect({
-                        ...finalState,
-                        aai: JSON.stringify(finalState.aai),
+                        culture: Culture(),
+                        affid: AffId(),
                       })
                     }
                   >
