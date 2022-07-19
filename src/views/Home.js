@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { addNewKeyValuePair } from "../feature/commonState";
+import logo from "../assets/Mcafee-Logo.svg";
 
 const Home = () => {
-  const customComponent = useSelector((state) => state.customComponent.value);
   const [togglePrefilEmail, setTogglePrefilEmail] = useState(false);
   const [disablePrefilEmailState, disablePrefilEmail] = useState(false);
   const [currentQuery, setCurrentQuery] = useState({
@@ -17,7 +17,12 @@ const Home = () => {
     hideLoginCTA: false,
     hideSignUp: false,
     ui_locales: "",
+    enableBack: false,
+    enableSkip: false,
+    hideHeader: false,
+    hideFooter: false,
   });
+
   const currentValue = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
@@ -36,22 +41,7 @@ const Home = () => {
   };
 
   return (
-    <div
-      className={
-        customComponent.customLeftContainer ? "MainDiv" : "MainDivOnlyOne"
-      }
-    >
-      {customComponent.customLeftContainer ? (
-        <div>
-          {React.createElement(
-            customComponent.customLeftContainer,
-            {
-              whichPage: "signup",
-            },
-            null
-          )}
-        </div>
-      ) : null}
+    <Fragment>
       <div
         style={{
           display: "flex",
@@ -60,6 +50,22 @@ const Home = () => {
           alignItems: "center",
         }}
       >
+        <div
+          style={{
+            fontWeight: 800,
+            marginBottom: "2rem",
+          }}
+        >
+          {" "}
+          <img
+            className="app-logo"
+            src={logo}
+            alt="React logo"
+            width="100px"
+          />{" "}
+          | QA
+        </div>
+
         <div>
           {Object.keys(currentValue).length !== 0 && (
             <div
@@ -354,6 +360,178 @@ const Home = () => {
               fontWeight: 700,
             }}
           >
+            enableBack:
+            {currentQuery?.enableBack ? (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  background: "#43CB2B",
+                  color: "white",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "enableBack", value: false })
+                  );
+                  setCurrentQuery({ ...currentQuery, enableBack: false });
+                }}
+              >
+                Yes
+              </button>
+            ) : (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "enableBack", value: true })
+                  );
+                  setCurrentQuery({ ...currentQuery, enableBack: true });
+                }}
+              >
+                No
+              </button>
+            )}
+          </div>
+          <div
+            style={{
+              marginBottom: "1rem",
+              fontWeight: 700,
+            }}
+          >
+            enableSkip:
+            {currentQuery?.enableSkip ? (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  background: "#43CB2B",
+                  color: "white",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "enableSkip", value: false })
+                  );
+                  setCurrentQuery({ ...currentQuery, enableSkip: false });
+                }}
+              >
+                Yes
+              </button>
+            ) : (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "enableSkip", value: true })
+                  );
+                  setCurrentQuery({ ...currentQuery, enableSkip: true });
+                }}
+              >
+                No
+              </button>
+            )}
+          </div>
+          <div
+            style={{
+              marginBottom: "1rem",
+              fontWeight: 700,
+            }}
+          >
+            hideHeader:
+            {currentQuery?.hideHeader ? (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  background: "#43CB2B",
+                  color: "white",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "hideHeader", value: false })
+                  );
+                  setCurrentQuery({ ...currentQuery, hideHeader: false });
+                }}
+              >
+                Yes
+              </button>
+            ) : (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "hideHeader", value: true })
+                  );
+                  setCurrentQuery({ ...currentQuery, hideHeader: true });
+                }}
+              >
+                No
+              </button>
+            )}
+          </div>
+          <div
+            style={{
+              marginBottom: "1rem",
+              fontWeight: 700,
+            }}
+          >
+            hideFooter:
+            {currentQuery?.hideFooter ? (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  background: "#43CB2B",
+                  color: "white",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "hideFooter", value: false })
+                  );
+                  setCurrentQuery({ ...currentQuery, hideFooter: false });
+                }}
+              >
+                Yes
+              </button>
+            ) : (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  border: "1px solid white",
+                }}
+                onClick={() => {
+                  dispatch(
+                    addNewKeyValuePair({ key: "hideFooter", value: true })
+                  );
+                  setCurrentQuery({ ...currentQuery, hideFooter: true });
+                }}
+              >
+                No
+              </button>
+            )}
+          </div>
+          <div
+            style={{
+              marginBottom: "1rem",
+              fontWeight: 700,
+            }}
+          >
             Affid{" "}
             <input
               type="text"
@@ -448,7 +626,6 @@ const Home = () => {
             }}
           />
         </div>
-
         <div style={{ display: "flex", justifyContent: "center" }}>
           <button
             style={{
@@ -462,7 +639,8 @@ const Home = () => {
           </button>
         </div>
       </div>
-    </div>
+      <hr />
+    </Fragment>
   );
 };
 
