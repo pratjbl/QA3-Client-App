@@ -158,7 +158,7 @@ const NavBar = (props) => {
                       loginWithRedirect({
                         ...finalState,
                         aai: JSON.stringify(finalState.aai),
-                        connectionName: "AV-Password-Authentication",
+                        connectionName: "AV-Migration-Pwd-Authentication",
                         // affid: AffId(),
                         // fragment: `culture=en-us&aff_id=105`,
                         // &aai=${JSON.stringify(
