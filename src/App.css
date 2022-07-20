@@ -33,9 +33,3 @@
 .result-block-container .result-block {
   opacity: 1;
 }
-.MainDiv{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
