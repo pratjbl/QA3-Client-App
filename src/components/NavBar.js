@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
-
+import configJson from "../auth_config.json";
 import { useLocation } from "react-router-dom";
 
 import {
@@ -23,11 +23,26 @@ import {
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-const NavBar = () => {
+const NavBar = (props) => {
   const currentValue = useSelector((state) => state.counter.value);
   const value = useLocation().search;
-
+  const {
+    user,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+    getIdTokenClaims,
+    logout,
+  } = useAuth0();
   const [finalState, setFinalState] = useState({});
+  const getAccessToken = async () => {
+    if (isAuthenticated) {
+      const data = await getAccessTokenSilently({ detailedResponse: true });
+      const data2 = await getIdTokenClaims();
+      console.log(data2, "access");
+      props.setResponse({ AccessToken: data, IdToken: data2?.__raw });
+    }
+  };
   useEffect(() => {
     function UseQuery() {
       return new URLSearchParams(value);
@@ -75,15 +90,19 @@ const NavBar = () => {
       },
     });
   }, [currentValue, value]);
+  useEffect(() => {
+    getAccessToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   console.log("---->In the Navbar", finalState, currentValue);
-
+  console.log(configJson.domain);
   const [isOpen, setIsOpen] = useState(false);
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
   const toggle = () => setIsOpen(!isOpen);
 
   const logoutWithRedirect = () =>
     logout({
-      returnTo: `https://${domain}/logout?redirectTo=${window.location.origin}`,
+      returnTo: window.location.origin,
     });
 
   return (
@@ -126,6 +145,18 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
+              {isAuthenticated && (
+                <NavItem>
+                  <NavLink
+                    tag={RouterNavLink}
+                    to="/main-component"
+                    exact
+                    activeClassName="router-link-exact-active"
+                  >
+                    Enroll MFA
+                  </NavLink>
+                </NavItem>
+              )}
             </Nav>
             <Nav className="d-none d-md-block" navbar>
               {!isAuthenticated && (
@@ -138,8 +169,6 @@ const NavBar = () => {
                       loginWithRedirect({
                         ...finalState,
                         aai: JSON.stringify(finalState.aai),
-                        source: "suhas-test",
-                        // connectionName: "AV-Migration-Pwd-Authentication",
                         // affid: AffId(),
                         // fragment: `culture=en-us&aff_id=105`,
                         // &aai=${JSON.stringify(
