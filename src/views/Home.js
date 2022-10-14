@@ -329,6 +329,56 @@ const Home = () => {
           ) : null}
           <div
             style={{
+              display: "flex",
+              marginBottom: "1rem",
+              fontWeight: 700,
+            }}
+          >
+            Disable Email globally{" "}
+            {currentQuery?.hideSignUp ? (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  background: "#43CB2B",
+                  color: "white",
+                  border: "1px solid white",
+                }}
+                onClick={(e) => {
+                  setCurrentQuery({
+                    ...currentQuery,
+                    hideSignUp: false,
+                  });
+                  dispatch(
+                    addNewKeyValuePair({ key: "disableEmail", value: false })
+                  );
+                }}
+              >
+                Yes
+              </button>
+            ) : (
+              <button
+                style={{
+                  marginLeft: "1rem",
+                  borderRadius: "2rem",
+                  border: "1px solid white",
+                }}
+                onClick={(e) => {
+                  setCurrentQuery({
+                    ...currentQuery,
+                    hideSignUp: true,
+                  });
+                  dispatch(
+                    addNewKeyValuePair({ key: "disableEmail", value: true })
+                  );
+                }}
+              >
+                No
+              </button>
+            )}
+          </div>
+          <div
+            style={{
               marginBottom: "1rem",
               fontWeight: 700,
             }}
