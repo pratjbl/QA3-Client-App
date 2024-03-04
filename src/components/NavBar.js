@@ -31,8 +31,7 @@ const NavBar = (props) => {
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
-    getIdTokenClaims,
-    logout,
+    getIdTokenClaims
   } = useAuth0();
   const [finalState, setFinalState] = useState({});
   const getAccessToken = async () => {
