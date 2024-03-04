@@ -71,6 +71,7 @@ const NavBar = (props) => {
       deviceId: "example_deviceId",
       aai: {
         ea: currentValue?.ea || "",
+        affcc: currentValue?.affid || AffId() || 0,
         cc: {
           Login: {
             hideLoginCTA: currentValue?.hideLoginCTAfromOTP,
@@ -86,6 +87,7 @@ const NavBar = (props) => {
             hideGoogleButton: currentValue?.hideGoogleLogin,
             ssp: currentValue?.ssp,
             soes: currentValue?.soes,
+            enableMSA: currentValue?.enableMSA
           },
           SignUp: {
             hideGoogleButton: currentValue?.hideGoogleSignUp,
@@ -97,6 +99,7 @@ const NavBar = (props) => {
               currentValue?.mode === "register"
                 ? currentValue?.disableEmail
                 : null,
+            enableMSA: currentValue?.enableMSA
           },
           mode: currentValue?.mode,
         },
