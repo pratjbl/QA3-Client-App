@@ -69,9 +69,9 @@ const NavBar = (props) => {
       hideFooter: currentValue?.hideFooter,
       ui_locales: currentValue?.ui_locales,
       deviceId: "example_deviceId",
-      action: currentValue?.action,
       aai: {
         ea: currentValue?.ea || "",
+        action: currentValue?.action,
         affcc: currentValue?.affid || AffId() || 0,
         cc: {
           Login: {
