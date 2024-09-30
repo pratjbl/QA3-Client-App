@@ -50,7 +50,7 @@ const NavBar = (props) => {
       let query = UseQuery();
       const parsedHash = new URLSearchParams(window.location.hash.substr(1));
       let culture = query.get("affid") ?? parsedHash.get("affid");
-      return culture;
+      return culture ? (culture === " " ? undefined : culture) : 0;
     };
     const Culture = () => {
       let query = UseQuery();
@@ -61,7 +61,7 @@ const NavBar = (props) => {
     };
     setFinalState({
       culture: currentValue?.culture || Culture() || "",
-      affid: currentValue?.affid || AffId() || 0,
+      affid: currentValue?.affid || AffId(),
       enableBack: currentValue?.enableBack,
       devicerefid: "example-devicerefid",
       enableSkip: currentValue?.enableSkip,
@@ -72,7 +72,7 @@ const NavBar = (props) => {
       aai: {
         ea: currentValue?.ea || "",
         action: currentValue?.action,
-        affcc: currentValue?.affid || AffId() || 0,
+        affcc: currentValue?.affid || AffId(),
         cc: {
           Login: {
             hideLoginCTA: currentValue?.hideLoginCTAfromOTP,
